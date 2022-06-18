@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-//#define DEBUG true
+// #define DEBUG true
 
 #define MIC_PIN 3
 #define BUTTON_PIN 2
@@ -22,10 +22,10 @@ enum SwitchCtrlStates
 SwitchStates switchState = OFF;
 SwitchCtrlStates switchCtrlState = INTERACTIVE;
 
-int clapGap[] = {250, 600, 250};
-int clapGapJitter = 100;
-int lastClapPatternMaxDelay = 1000;
-int lastClapDelay = 500;
+int clapGap[] = {250, 700, 250};
+int clapGapJitter = 150;
+int lastClapPatternMaxDelay = 1500;
+int lastClapDelay = 1000;
 int clapDebounce = 50;
 bool hearingClap = false;
 int clapsPointer = 0;
@@ -42,7 +42,7 @@ void setup()
   pinMode(SWITCHER_PIN, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT);
 
-  digitalWrite(SWITCHER_PIN, LOW);
+  digitalWrite(SWITCHER_PIN, HIGH);
   digitalWrite(LED_BUILTIN, LOW);
 
   lastClapHeared = millis();
@@ -76,7 +76,7 @@ void loop()
     }
 
     unsigned long newClapHeared = millis();
-    unsigned long betweenClaps = newClapHeared - lastClapHeared;
+    long betweenClaps = newClapHeared - lastClapHeared;
     lastClapHeared = newClapHeared;
     int expectedClapGap = clapGap[clapsPointer - 1];
 
@@ -121,7 +121,8 @@ void loop()
           #if defined(DEBUG)
           Serial.println("switch on.");
           #endif
-          digitalWrite(SWITCHER_PIN, HIGH);
+          digitalWrite(SWITCHER_PIN, LOW);
+          digitalWrite(LED_BUILTIN, HIGH);
           switchState = ON;
         }
         else
@@ -129,7 +130,8 @@ void loop()
           #if defined(DEBUG)
           Serial.println("switch off.");
           #endif
-          digitalWrite(SWITCHER_PIN, LOW);
+          digitalWrite(SWITCHER_PIN, HIGH);
+          digitalWrite(LED_BUILTIN, LOW);
           switchState = OFF;
         }
       }
@@ -169,7 +171,8 @@ void updateCtrlState()
         Serial.println("going to interactive mode.");
         #endif
         switchState = OFF;
-        digitalWrite(SWITCHER_PIN, LOW);
+        digitalWrite(SWITCHER_PIN, HIGH);
+        digitalWrite(LED_BUILTIN, LOW);
       }
     }
     else
@@ -181,7 +184,8 @@ void updateCtrlState()
         Serial.println("going to always on mode.");
         #endif
         switchState = ON;
-        digitalWrite(SWITCHER_PIN, HIGH);
+        digitalWrite(SWITCHER_PIN, LOW);
+        digitalWrite(LED_BUILTIN, HIGH);
       }
     }
   }
@@ -192,7 +196,6 @@ bool hearingNewClap()
 {
   if (digitalRead(MIC_PIN))
   {
-    digitalWrite(LED_BUILTIN, HIGH);
     if (hearingClap)
     {
       return false;
@@ -201,7 +204,6 @@ bool hearingNewClap()
   }
   else
   {
-    digitalWrite(LED_BUILTIN, LOW);
     hearingClap = false;
   }
 
