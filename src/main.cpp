@@ -42,7 +42,7 @@ void setup()
   pinMode(SWITCHER_PIN, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT);
 
-  digitalWrite(SWITCHER_PIN, HIGH);
+  digitalWrite(SWITCHER_PIN, LOW);
   digitalWrite(LED_BUILTIN, LOW);
 
   lastClapHeared = millis();
@@ -121,7 +121,7 @@ void loop()
           #if defined(DEBUG)
           Serial.println("switch on.");
           #endif
-          digitalWrite(SWITCHER_PIN, LOW);
+          digitalWrite(SWITCHER_PIN, HIGH);
           digitalWrite(LED_BUILTIN, HIGH);
           switchState = ON;
         }
@@ -130,7 +130,7 @@ void loop()
           #if defined(DEBUG)
           Serial.println("switch off.");
           #endif
-          digitalWrite(SWITCHER_PIN, HIGH);
+          digitalWrite(SWITCHER_PIN, LOW);
           digitalWrite(LED_BUILTIN, LOW);
           switchState = OFF;
         }
@@ -171,7 +171,7 @@ void updateCtrlState()
         Serial.println("going to interactive mode.");
         #endif
         switchState = OFF;
-        digitalWrite(SWITCHER_PIN, HIGH);
+        digitalWrite(SWITCHER_PIN, LOW);
         digitalWrite(LED_BUILTIN, LOW);
       }
     }
@@ -184,7 +184,7 @@ void updateCtrlState()
         Serial.println("going to always on mode.");
         #endif
         switchState = ON;
-        digitalWrite(SWITCHER_PIN, LOW);
+        digitalWrite(SWITCHER_PIN, HIGH);
         digitalWrite(LED_BUILTIN, HIGH);
       }
     }
