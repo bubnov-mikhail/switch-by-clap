@@ -124,6 +124,7 @@ void loop()
           digitalWrite(SWITCHER_PIN, HIGH);
           digitalWrite(LED_BUILTIN, HIGH);
           switchState = ON;
+          delay(lastClapDelay);
         }
         else
         {
@@ -133,6 +134,7 @@ void loop()
           digitalWrite(SWITCHER_PIN, LOW);
           digitalWrite(LED_BUILTIN, LOW);
           switchState = OFF;
+          delay(lastClapDelay);
         }
       }
     }
@@ -173,6 +175,7 @@ void updateCtrlState()
         switchState = OFF;
         digitalWrite(SWITCHER_PIN, LOW);
         digitalWrite(LED_BUILTIN, LOW);
+        delay(lastClapDelay);
       }
     }
     else
@@ -186,6 +189,7 @@ void updateCtrlState()
         switchState = ON;
         digitalWrite(SWITCHER_PIN, HIGH);
         digitalWrite(LED_BUILTIN, HIGH);
+        delay(lastClapDelay);
       }
     }
   }
